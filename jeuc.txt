@@ -1,0 +1,289 @@
+/* 
+ jeu.c
+ -----
+ Par Valentin Wissler
+
+ Fonctions principales du jeu
+
+ 
+*/
+
+#include "jeu.h"
+
+void  deplacerCaisse(int *premiereCase, int *secondeCase) 
+{
+  if (*premiereCase == CAISSE || *premiereCase == CAISSE_OK)
+  {
+        if (*secondeCase == OBJECTIF)
+            *secondeCase = CAISSE_OK;
+        else
+            *secondeCase = CAISSE;
+
+        if (*premiereCase == CAISSE_OK)
+            *premiereCase = OBJECTIF;
+        else
+            *premiereCase = VIDE;
+  }
+}
+
+void pauseAh(void)
+{
+SDL_Event event;
+bool continuer = true;
+
+while (continuer)
+	{
+	SDL_WaitEvent(&event);
+	switch (event.type)
+		{
+			case SDL_QUIT:
+				continuer = false;
+				break;
+			case SDL_KEYDOWN:
+				switch (event.key.keysym.sym)
+				{
+					case SDLK_ESCAPE:
+					continuer = false;
+					break;
+
+				}
+		}	
+	}
+}
+
+void jouer(SDL_Renderer*renderer)
+{
+	SDL_Surface*surface;
+	SDL_Texture*textureMur,
+		   *textureCaisse,
+		   *textureCaisseOk,
+		   *textureObjectif,
+		   *textureMarioActuel; //Pointeur sur *mario 
+	SDL_Texture *mario[4]={NULL}; // Tableau de textures pour chaque sprite de mario
+	SDL_Rect position, positionJoueur;
+	SDL_Event event;
+	
+	bool continuer = true; 
+	int i = 0, j = 0, objectifsRestants =0; // vont permettre de parcourir carte 
+	int carte[NB_BLOC_LARGEUR][NB_BLOC_HAUTEUR]={0}; // carte du jeu 
+
+	/*Chargement des sprites */
+        surface = IMG_Load("Resources/mur.jpg");
+	textureMur = SDL_CreateTextureFromSurface(renderer,surface);
+	SDL_FreeSurface(surface);
+        surface = IMG_Load("Resources/caisee.jpg");
+	textureCaisse = SDL_CreateTextureFromSurface(renderer,surface);
+	SDL_FreeSurface(surface);		
+        surface = IMG_Load("Resources/caisse_ok.jpg");
+	textureCaisseOk = SDL_CreateTextureFromSurface(renderer,surface);
+	SDL_FreeSurface(surface);
+        surface = IMG_Load("Resources/objectif.png");
+	textureObjectif = SDL_CreateTextureFromSurface(renderer,surface);
+	SDL_FreeSurface(surface);
+	surface = IMG_Load("Resources/mario_haut.gif");
+	mario[HAUT] = SDL_CreateTextureFromSurface(renderer,surface);
+	SDL_FreeSurface(surface);
+        surface = IMG_Load("Resources/mario_bas.gif");
+	mario[BAS] = SDL_CreateTextureFromSurface(renderer,surface);
+	SDL_FreeSurface(surface);
+	surface = IMG_Load("Resources/mario_gauche.gif");
+	mario[GAUCHE] = SDL_CreateTextureFromSurface(renderer,surface);
+	SDL_FreeSurface(surface);
+	surface = IMG_Load("Resources/mario_droite.gif");
+	mario[DROITE] = SDL_CreateTextureFromSurface(renderer,surface);
+	SDL_FreeSurface(surface);
+
+	textureMarioActuel = mario[GAUCHE];
+	
+	//Chargement du niveau
+	if(!chargerNiveau(carte))
+	exit(EXIT_FAILURE);
+	
+	/*Check for Mario's starting position on the map */ 
+	for(i=0;i<NB_BLOC_HAUTEUR;i++)
+	{
+		for(j=0;j<NB_BLOC_LARGEUR;j++)
+		{
+			if(carte[i][j] == MARIO)
+			positionJoueur.x = j;
+			positionJoueur.y = i;
+			carte[i][j] = VIDE;
+
+		}
+	}
+	
+	while(continuer)
+	{	
+		switch(event.type)
+		{
+			case SDL_QUIT:
+			   continuer=false;
+			   break;
+			case SDL_KEYDOWN:
+			   switch(event.key.keysym.sym)
+			   {
+			      case SDLK_ESCAPE:
+				 continuer = false;
+				 break;
+			      case SDLK_UP:
+				 textureMarioActuel=mario[HAUT];
+				 deplacerJoueur(carte, &positionJoueur, HAUT);
+				 break;
+			      case SDLK_DOWN:
+				 textureMarioActuel=mario[BAS];
+				 deplacerJoueur(carte, &positionJoueur, BAS);
+				 break;
+			      case SDLK_LEFT:
+				 textureMarioActuel=mario[GAUCHE];
+				 deplacerJoueur(carte, &positionJoueur, GAUCHE);
+				 break;
+			      case SDLK_RIGHT:
+				 textureMarioActuel=mario[DROITE];
+				 deplacerJoueur(carte, &positionJoueur, DROITE);
+				 break;
+
+
+			   } 
+		}
+	
+	SDL_SetRenderDrawColor(renderer,255,255,255,255);	
+	SDL_RenderFillRect(renderer, NULL);
+
+	// Placement des objets à l'écran 
+	
+	objectifsRestants=0;
+	
+	for(i=0;i<NB_BLOC_HAUTEUR;i++)
+	{
+		for(j=0;j<NB_BLOC_LARGEUR;j++)
+		{
+			position.y=i*TAILLE_BLOC;
+			position.x=j*TAILLE_BLOC;
+
+			switch(carte[i][j])
+			{
+				case MUR:
+				   SDL_RenderCopy(renderer,textureMur,NULL,&position);
+				   break;
+				case CAISSE:
+				   SDL_RenderCopy(renderer,textureCaisse,NULL,&position);
+				   break;
+				case CAISSE_OK:
+				   SDL_RenderCopy(renderer,textureCaisseOk,NULL,&position);
+				   break;
+				case OBJECTIF:
+				   SDL_RenderCopy(renderer,textureObjectif,NULL,&position);
+				   objectifsRestants=1;
+				   break;
+
+			}
+						
+		}	
+	}
+	
+	// Si on ne trouve pas d'object on a gagné 
+	if(!(objectifsRestants))
+	{
+		continuer = false;
+	}
+
+	// On affiche mario à l'écran 
+	position.x=positionJoueur.x*NB_BLOC_LARGEUR;
+	position.y=positionJoueur.y*NB_BLOC_HAUTEUR;
+	SDL_RenderCopy(renderer,textureMarioActuel,NULL,&position);
+	
+	SDL_RenderPresent(renderer);
+	
+
+
+	}// Continuer end 
+
+	SDL_DestroyTexture(textureMur);
+	SDL_DestroyTexture(textureCaisse);
+	SDL_DestroyTexture(textureCaisseOk);
+	SDL_DestroyTexture(textureObjectif);
+	SDL_DestroyTexture(textureMarioActuel);
+
+}
+
+
+
+
+
+void deplacerJoueur(int carte[][NB_BLOC_HAUTEUR], SDL_Rect *pos, int direction)
+{
+switch(direction)
+	{
+	case HAUT:
+		// if mario goes out the screen
+		if(pos->y - 1 < 0) 
+			break;
+		// if above is a wall 
+		if(carte[pos->x][pos->y - 1] == MUR)
+			break;
+		// If cell above M is a C || Cok && if 2 cells above is OOB || W || C || Cok dnt move 
+		if ((carte[pos->x][pos->y - 1] == CAISSE || carte[pos->x][pos->y - 1] == CAISSE_OK) &&
+    (pos->y - 2 < 0 || carte[pos->x][pos->y - 2] == MUR ||
+    carte[pos->x][pos->y - 2] == CAISSE || carte[pos->x][pos->y - 2] == CAISSE_OK))    		        
+			break;
+		// on peut deplqcer si all above is false 
+		// D'abord on check si une caisse est en haut et la deplace si possible
+		deplacerCaisse(&carte[pos->x][pos->y - 1], &carte[pos->x][pos->y - 2]);
+		// on fait monter mario
+		pos->y--;  	
+		break;
+	case BAS:
+
+		if(pos->y + 1 > NB_BLOC_HAUTEUR)
+			break;
+
+		if(carte[pos->x][pos->y + 1] == MUR)
+			break;
+
+		if ((carte[pos->x][pos->y + 1] == CAISSE || carte[pos->x][pos->y + 1] == CAISSE_OK) &&
+    (pos->y + 2 > NB_BLOC_HAUTEUR || carte[pos->x][pos->y + 2] == MUR ||
+    carte[pos->x][pos->y + 2] == CAISSE || carte[pos->x][pos->y + 2] == CAISSE_OK))    		        
+			break;
+
+		deplacerCaisse(&carte[pos->x][pos->y + 1], &carte[pos->x][pos->y + 2]);
+
+		pos->y++;  	
+		break;
+
+	break;
+	case GAUCHE:
+		if(pos->x - 1 < 0) 
+			break;
+
+		if(carte[pos->x - 1][pos->y] == MUR)
+			break;
+	
+		if ((carte[pos->x - 1][pos->y] == CAISSE || carte[pos->x - 1][pos->y] == CAISSE_OK) &&
+    (pos->x - 2 < 0 || carte[pos->x - 2][pos->y] == MUR ||
+    carte[pos->x - 2][pos->y] == CAISSE || carte[pos->x - 2][pos->y] == CAISSE_OK))    		        
+			break;
+		
+		deplacerCaisse(&carte[pos->x][pos->x - 1], &carte[pos->x - 2][pos->y]);
+		pos->x--;  	
+		break;
+		
+	break;
+	case DROITE:
+		if(pos->x + 1 > NB_BLOC_LARGEUR)
+			break;
+
+		if(carte[pos->x + 1][pos->y] == MUR)
+			break;
+
+		if ((carte[pos->x + 1][pos->y] == CAISSE || carte[pos->x + 1][pos->y] == CAISSE_OK) &&
+    (pos->x + 2 > NB_BLOC_LARGEUR || carte[pos->x + 2][pos->y] == MUR ||
+    carte[pos->x + 2][pos->y] == CAISSE || carte[pos->x + 2][pos->y] == CAISSE_OK))    		        
+			break;
+
+		deplacerCaisse(&carte[pos->x][pos->x + 1], &carte[pos->x + 2][pos->y]);
+		pos->x++;  	
+		break;
+		
+	break;
+	 } // switch end 
+}
