@@ -44,7 +44,7 @@ int manuelJeu(SDL_Renderer*renderer, TTF_Font*font)
 	int resultat=2;
 	bool continuer = true;
 
-	texture = loadTexture(renderer,"media/bgintro.png");
+	texture = loadTextureFromImage(renderer,"media/bgintro.png");
 	SDL_RenderCopy(renderer,texture,NULL,NULL);
 
 
@@ -261,15 +261,15 @@ void jouer(SDL_Renderer*renderer)
 	int level = 0, mouvement = 0;
 	int *plevel = &level;
 
-	SDL_Texture *textureMur = loadTexture(renderer,"media/mur.png"),
-		    *textureVide = loadTexture(renderer,"media/ground_01.png"),
-		    *textureCaisse= loadTexture(renderer,"media/box.png"),
-		    *textureCaisseOk = loadTexture(renderer,"media/boxOK.png"),
-		    *textureObjectif = loadTexture(renderer,"media/objAlt.png");
-		    mario[HAUT]= loadTexture(renderer,"media/mario_haut.png");
-		    mario[BAS]= loadTexture(renderer,"media/mario_bas.png");
-		    mario[GAUCHE]= loadTexture(renderer,"media/mario_gauche.png");
-		    mario[DROITE]= loadTexture(renderer,"media/mario_droite.png");
+	SDL_Texture *textureMur = loadTextureFromImage(renderer,"media/mur.png"),
+		    *textureVide = loadTextureFromImage(renderer,"media/ground_01.png"),
+		    *textureCaisse= loadTextureFromImage(renderer,"media/box.png"),
+		    *textureCaisseOk = loadTextureFromImage(renderer,"media/boxOK.png"),
+		    *textureObjectif = loadTextureFromImage(renderer,"media/objAlt.png");
+		    mario[HAUT]= loadTextureFromImage(renderer,"media/mario_haut.png");
+		    mario[BAS]= loadTextureFromImage(renderer,"media/mario_bas.png");
+		    mario[GAUCHE]= loadTextureFromImage(renderer,"media/mario_gauche.png");
+		    mario[DROITE]= loadTextureFromImage(renderer,"media/mario_droite.png");
 
 	textureMarioActuel = mario[BAS];
 

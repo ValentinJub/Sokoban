@@ -19,7 +19,8 @@ Prototypes pour fonctions dans function.c
 #include <SDL2/SDL_ttf.h>
 #include "constantes.h"
 
-SDL_Texture* loadTexture(SDL_Renderer*, char*path);
+SDL_Texture* loadTextureFromImage(SDL_Renderer*, char*path);
+SDL_Texture* loadTextureFromText(SDL_Renderer*, TTF_Font*, char*text, SDL_Color);
 TTF_Font* loadFont(char*path, int size);
 
 #endif

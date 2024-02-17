@@ -23,7 +23,6 @@ Prototypes pour fonctions dans editeur.c
 #include "function.h"
 
 void editeur(SDL_Renderer*);
-
 int manuelEditeur(SDL_Renderer*renderer, TTF_Font*font);
 
 #endif

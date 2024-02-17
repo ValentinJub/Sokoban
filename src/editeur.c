@@ -33,8 +33,7 @@ int manuelEditeur(SDL_Renderer*renderer, TTF_Font*font)
 	SDL_RenderClear(renderer);
 
 	sprintf(phrase, "To select a sprite press:");
-	surface = TTF_RenderText_Blended(font,phrase,couleurRouge);
-	texture = SDL_CreateTextureFromSurface(renderer,surface);
+	texture = loadTextureFromText(renderer,font,phrase,couleurRouge);
 	rect.h=rectMid.h;
 	rect.w=rectMid.w;
 	rect.y=rectMid.y-(rectMid.h*2);
@@ -42,8 +41,7 @@ int manuelEditeur(SDL_Renderer*renderer, TTF_Font*font)
 	SDL_RenderCopy(renderer,texture,NULL,&rect);
 	
 	sprintf(phrase, "1>Wall 2>Mario 3>Box 4>Obj 5>B_OK");
-	surface = TTF_RenderText_Blended(font,phrase,couleurRouge);
-	texture = SDL_CreateTextureFromSurface(renderer,surface);
+	texture = loadTextureFromText(renderer,font,phrase,couleurRouge);
 	rect.h=rectMid.h;
 	rect.w=rectMid.w;
 	rect.y=rectMid.y-(rectMid.h*1);
@@ -52,14 +50,12 @@ int manuelEditeur(SDL_Renderer*renderer, TTF_Font*font)
 	
 	//MID~~~~~~~~~~~~~~~~~~
 	sprintf(phrase, "Mouse left click to insert on map");
-	surface = TTF_RenderText_Blended(font,phrase,couleurRouge);
-	texture = SDL_CreateTextureFromSurface(renderer,surface);
+	texture = loadTextureFromText(renderer,font,phrase,couleurRouge);
 	SDL_RenderCopy(renderer,texture,NULL,&rectMid);
 	//MIDEND~~~~~~~~~~~~~~~
 	
 	sprintf(phrase, "Mouse right click to delete sprite");
-	surface = TTF_RenderText_Blended(font,phrase,couleurRouge);
-	texture = SDL_CreateTextureFromSurface(renderer,surface);
+	texture = loadTextureFromText(renderer,font,phrase,couleurRouge);
 	rect.h=rectMid.h;
 	rect.w=rectMid.w;
 	rect.y=rectMid.y+(rectMid.h*1);
@@ -67,8 +63,7 @@ int manuelEditeur(SDL_Renderer*renderer, TTF_Font*font)
 	SDL_RenderCopy(renderer,texture,NULL,&rect);
 	
 	sprintf(phrase, "Press S to save");
-	surface = TTF_RenderText_Blended(font,phrase,couleurRouge);
-	texture = SDL_CreateTextureFromSurface(renderer,surface);
+	texture = loadTextureFromText(renderer,font,phrase,couleurRouge);
 	rect.h=rectMid.h;
 	rect.w=rectMid.w;
 	rect.y=rectMid.y+(rectMid.h*2);
@@ -110,8 +105,7 @@ int manuelEditeur(SDL_Renderer*renderer, TTF_Font*font)
 	
 }
 
-void editeur(SDL_Renderer*renderer)
-{
+void editeur(SDL_Renderer*renderer) {
 	SDL_Surface*surface = NULL;
 	SDL_Texture*textureMur = NULL,
 		   *textureCaisse = NULL,
@@ -130,12 +124,12 @@ void editeur(SDL_Renderer*renderer)
 	SDL_Rect posMario = {0};
 
 	/*Chargement des sprites */
-	textureMur = loadTexture(renderer,"media/mur.png");
-	textureVide = loadTexture(renderer,"media/ground_06.png");
-	textureCaisse = loadTexture(renderer,"media/box.png");
-	textureCaisseOk = loadTexture(renderer,"media/box_ok.png");
-	textureObjectif = loadTexture(renderer,"media/objAlt.png");
-	textureMario = loadTexture(renderer,"media/mario_bas.png");
+	textureMur = loadTextureFromImage(renderer,"media/mur.png");
+	textureVide = loadTextureFromImage(renderer,"media/ground_06.png");
+	textureCaisse = loadTextureFromImage(renderer,"media/box.png");
+	textureCaisseOk = loadTextureFromImage(renderer,"media/boxOK.png");
+	textureObjectif = loadTextureFromImage(renderer,"media/objAlt.png");
+	textureMario = loadTextureFromImage(renderer,"media/mario_bas.png");
 
 	// Chargement font 
 	font = loadFont("media/hackbold.ttf",500);
