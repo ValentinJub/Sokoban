@@ -1,15 +1,15 @@
 /* 
-fichier.h 
+file.h 
 --------
 Par Valentin 
 
-Prototype de fonctions chargement et sauvegarde de fichier 
+Prototype de fonctions chargement et sauvegarde de file 
 *
  */
 
 
-#ifndef DEF_FICHIER
-#define DEF_FICHIER
+#ifndef DEF_FILE
+#define DEF_FILE
 
 #include <string.h>
 #include <stdio.h>

@@ -1,14 +1,14 @@
 /* 
- jeu.c
+ game.c
  -----
  Par Valentin Wissler
 
- Fonctions principales du jeu, affichage sprites, mouvements et collisions et boucle du jeu
+ Fonctions principales du game, affichage sprites, mouvements et collisions et boucle du game
 
  
 */
 
-#include "jeu.h"
+#include "game.h"
 
 void compteurMouvement(SDL_Renderer*renderer, int mouvement, TTF_Font*font)
 {
@@ -257,7 +257,7 @@ void jouer(SDL_Renderer*renderer)
 	
 	bool jouer = true, continuer = true, playAgain = true, win = true;  
 	int i = 0, j = 0, objectifsRestants =0; // vont permettre de parcourir carte 
-	int carte[NB_BLOC_LARGEUR][NB_BLOC_HAUTEUR]={0}; // carte du jeu 
+	int carte[NB_BLOC_LARGEUR][NB_BLOC_HAUTEUR]={0}; // carte du game 
 	int level = 0, mouvement = 0;
 	int *plevel = &level;
 

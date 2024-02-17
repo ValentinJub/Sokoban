@@ -1,14 +1,14 @@
 /* 
- editeur.c
+ level_editor.c
  -----
  Par Valentin Wissler
 
- Fonctions principales de l'editeur
+ Fonctions principales de l'level_editor
 
  
 */
 
-#include "editeur.h"
+#include "level_editor.h"
 
 
 int manuelEditeur(SDL_Renderer*renderer, TTF_Font*font)
@@ -105,7 +105,7 @@ int manuelEditeur(SDL_Renderer*renderer, TTF_Font*font)
 	
 }
 
-void editeur(SDL_Renderer*renderer) {
+void level_editor(SDL_Renderer*renderer) {
 	SDL_Surface*surface = NULL;
 	SDL_Texture*textureMur = NULL,
 		   *textureCaisse = NULL,

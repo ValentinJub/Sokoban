@@ -1,35 +1,35 @@
 
 /* 
-fichier.c 
+file.c 
 --------
 Par Valentin 
 
-Fonctions chargement et sauvegarde de fichier 
+Fonctions chargement et sauvegarde de file 
 
  */
 
-#include "fichier.h"
+#include "file.h"
 
 
 
 int chargerNiveau(int niveau[][NB_BLOC_HAUTEUR], int*level) {
-    FILE* fichier = NULL;
+    FILE* file = NULL;
     char ligneFichier[NB_BLOC_LARGEUR * NB_BLOC_HAUTEUR + 1] = {0};
     int i = 0, j = 0;
     long deplacement = 0;
 
-    fichier = fopen("src/niveaux.lvl", "r");
-    if (fichier == NULL)
+    file = fopen("src/niveaux.lvl", "r");
+    if (file == NULL)
         return 0;
 
     // definie la valeur de la position du curseur  
     deplacement= *level*(NB_BLOC_HAUTEUR*NB_BLOC_LARGEUR + 1);
     // positionne le curser 
-    fseek(fichier, deplacement, SEEK_SET);
+    fseek(file, deplacement, SEEK_SET);
     // recupere la position des sprites dans ligneFichier
-    fgets(ligneFichier, NB_BLOC_LARGEUR * NB_BLOC_HAUTEUR + 1, fichier);
+    fgets(ligneFichier, NB_BLOC_LARGEUR * NB_BLOC_HAUTEUR + 1, file);
 
-    /*lit le fichier niveaux et positionne les sprites dans la carte  */ 
+    /*lit le file niveaux et positionne les sprites dans la carte  */ 
     for (i = 0 ; i < NB_BLOC_HAUTEUR; i++)
     {
         for (j = 0 ; j < NB_BLOC_LARGEUR; j++)
@@ -55,27 +55,27 @@ int chargerNiveau(int niveau[][NB_BLOC_HAUTEUR], int*level) {
         }
     }
 
-    fclose(fichier);
+    fclose(file);
     return 1;
 }
 
 int sauvegarderNiveau(int niveau[][NB_BLOC_HAUTEUR])
 {
-    FILE* fichier = NULL;
+    FILE* file = NULL;
     int i = 0, j = 0;
 
-    fichier = fopen("src/editeur.lvl", "a");
-    if (fichier == NULL)
+    file = fopen("src/editeur.lvl", "a");
+    if (file == NULL)
         return 0;
 
     for (i = 0 ; i < NB_BLOC_LARGEUR ; i++)
     {
         for (j = 0 ; j < NB_BLOC_HAUTEUR ; j++)
         {
-            fprintf(fichier, "%d", niveau[i][j]);
+            fprintf(file, "%d", niveau[i][j]);
         }
     }
 
-    fclose(fichier);
+    fclose(file);
     return 1;
 }

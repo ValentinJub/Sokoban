@@ -1,13 +1,13 @@
 /*
-jeu.h 
+game.h 
 -----
 Par Valentin Wissler
 
-Prototypes pour fonctions dans jeu.c 
+Prototypes pour fonctions dans game.c 
 */ 
 
-#ifndef DEF_JEU	
-#define DEF_JEU
+#ifndef DEF_GAME	
+#define DEF_GAME
 
 
 #include <stdio.h>
@@ -18,7 +18,7 @@ Prototypes pour fonctions dans jeu.c
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 #include "constantes.h"
-#include "fichier.h"
+#include "file.h"
 #include "function.h"
 
 int manuelJeu(SDL_Renderer*renderer, TTF_Font*font);

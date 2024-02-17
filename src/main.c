@@ -12,9 +12,9 @@ Main game menu - allows to chose from level editor to play mode
 #include <stdbool.h>
 
 #include "constantes.h"
-#include "jeu.h"
-#include "editeur.h"
-#include "fichier.h"
+#include "game.h"
+#include "level_editor.h"
+#include "file.h"
 
 
 int main(int argc, char *argv[])
@@ -79,15 +79,15 @@ int main(int argc, char *argv[])
 			jouer(renderer);
 			break;
 		   case SDLK_2:
-			editeur(renderer); 
+			level_editor(renderer); 
 			break;
 		}
 		break;
 	   }
     }
-    	TTF_Quit();
+	TTF_Quit();
  	SDL_DestroyRenderer(renderer);
-    	SDL_DestroyWindow(window);
+	SDL_DestroyWindow(window);
 	SDL_Quit();
 	return EXIT_SUCCESS;
 		

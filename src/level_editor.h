@@ -1,9 +1,9 @@
 /*
-editeur.h
+level_editor.h
 -----
 Par Valentin Wissler
 
-Prototypes pour fonctions dans editeur.c
+Prototypes pour fonctions dans level_editor.c
 */ 
 
 #ifndef DEF_EDITEUR
@@ -18,11 +18,11 @@ Prototypes pour fonctions dans editeur.c
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 #include "constantes.h"
-#include "fichier.h"
-#include "jeu.h"
+#include "file.h"
+#include "game.h"
 #include "function.h"
 
-void editeur(SDL_Renderer*);
+void level_editor(SDL_Renderer*);
 int manuelEditeur(SDL_Renderer*renderer, TTF_Font*font);
 
 #endif
