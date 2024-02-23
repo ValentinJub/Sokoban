@@ -3,4 +3,10 @@
 .vscode
 main
 .DS_Store
+include
+lib
+*.dSYM
+src/lib
+src/include
+build
 ```

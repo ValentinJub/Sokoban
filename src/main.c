@@ -26,16 +26,14 @@ int main(int argc, char *argv[])
 	SDL_Event event;
 	bool continuer = true;
 
-
 	 /* Initialisation SDL */
     if((SDL_Init(SDL_INIT_VIDEO))!=0) {
         printf("oups");
     }
     TTF_Init();
-    if(TTF_Init() < 0)
-    {
+    if(TTF_Init() < 0) {
     	fprintf(stderr, "Oups error d'ouverture TTF: %s \n", TTF_GetError());
-	EXIT_FAILURE;
+		EXIT_FAILURE;
     }
     /* Creaton fenêtre + renderer */
     if ((SDL_CreateWindowAndRenderer(LARGEUR_FENETRE, HAUTEUR_FENETRE, SDL_WINDOW_OPENGL, &window, &renderer))==-1) {
